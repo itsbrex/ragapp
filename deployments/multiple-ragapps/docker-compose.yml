@@ -22,7 +22,7 @@ services:
 
   ragapp-cs50:
     build: ../../src/ragapp
-    image: ragapp/ragapp:latest
+    image: ${RAGAPP_IMAGE:-ragapp/ragapp:latest}
     volumes:
       - ./data/cs50-data:/app/data
     labels:
@@ -31,7 +31,9 @@ services:
       - traefik.http.services.ragapp-cs50.loadbalancer.server.port=8000
       - traefik.http.routers.ragapp-cs50.rule=PathPrefix(`/a/cs50`)
       - traefik.http.routers.ragapp-cs50-admin.rule=PathRegexp(`/a/cs50/admin`)
+      - traefik.http.routers.ragapp-cs50-management-api.rule=PathRegexp(`/a/cs50/api/management`)
       - traefik.http.routers.ragapp-cs50-admin.middlewares=admin-auth
+      - traefik.http.routers.ragapp-cs50-management-api.middlewares=admin-auth
     environment:
       - BASE_URL=/a/cs50
       - FILESERVER_URL_PREFIX=/a/cs50/api/files
@@ -44,7 +46,7 @@ services:
 
   ragapp-cs101:
     build: ../../src/ragapp
-    image: ragapp/ragapp:latest
+    image: ${RAGAPP_IMAGE:-ragapp/ragapp:latest}
     volumes:
       - ./data/cs101-data:/app/data
     labels:
@@ -53,7 +55,9 @@ services:
       - traefik.http.services.ragapp-cs101.loadbalancer.server.port=8000
       - traefik.http.routers.ragapp-cs101.rule=PathPrefix(`/a/cs101`)
       - traefik.http.routers.ragapp-cs101-admin.rule=PathRegexp(`/a/cs101/admin`)
+      - traefik.http.routers.ragapp-cs101-management-api.rule=PathRegexp(`/a/cs101/api/management`)
       - traefik.http.routers.ragapp-cs101-admin.middlewares=admin-auth
+      - traefik.http.routers.ragapp-cs101-management-api.middlewares=admin-auth
     environment:
       - BASE_URL=/a/cs101
       - FILESERVER_URL_PREFIX=/a/cs101/api/files
@@ -65,12 +69,13 @@ services:
       - ragapp-network
   
   manager:
-    image: ragapp/manager:latest
+    image: ${MANAGER_IMAGE:-ragapp/manager:latest}
     build: ../../src/manager
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - BASE_URL=/manager
+      - RAGAPP_IMAGE=${RAGAPP_IMAGE:-ragapp/ragapp:latest}
     labels:
       - traefik.enable=true
       - traefik.http.services.app.loadbalancer.server.port=8000

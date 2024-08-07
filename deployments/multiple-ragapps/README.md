@@ -12,10 +12,28 @@ Navigate to the `deployments/multiple-ragapps` directory and run Docker Compose:
 
 ```shell
 cd deployments/multiple-ragapps
+docker compose pull # to ensure the latest images are pulled
 docker compose up
 ```
 
-> _Note_: Use `docker compose up --build` to use a local build instead of the images from Docker Hub.
+> _Note_: This will use the release images from from Docker Hub.
+
+### Start local build
+
+To use a local build instead, call:
+
+```shell
+docker compose up --build
+```
+
+### Use the test image (main branch)
+
+To use the latest test version from the `main` branch, call:
+
+```shell
+RAGAPP_IMAGE=ghcr.io/ragapp/ragapp:latest MANAGER_IMAGE=ghcr.io/ragapp/ragapp-manager:latest docker compose pull
+RAGAPP_IMAGE=ghcr.io/ragapp/ragapp:latest MANAGER_IMAGE=ghcr.io/ragapp/ragapp-manager:latest docker compose up
+```
 
 ## App paths:
 

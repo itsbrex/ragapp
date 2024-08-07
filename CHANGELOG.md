@@ -1,5 +1,18 @@
 # ragbox
 
+## 0.0.20
+
+### Patch Changes
+
+- e91ff64: remove striped path for default rag_app label template
+
+## 0.0.19
+
+### Patch Changes
+
+- 98ef118: Add manager app
+- fd340ad: Add support for gpt-4o-mini model
+
 ## 0.0.18
 
 ### Patch Changes
